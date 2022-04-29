@@ -5,16 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Team extends Model
+class Match extends Model
 {
     use HasFactory;
 
     /* Settings */
     protected $fillable = [
-        'title',
-        'description',
+        'home_team_id',
+        'away_team_id',
         'league_id',
     ];
 
@@ -24,20 +23,17 @@ class Team extends Model
         return $this->belongsTo(League::class);
     }
 
-    public function homeMatches(): HasMany
+    public function homeTeam(): BelongsTo
     {
-        return $this->hasMany(Match::class, 'home_team_id');
+        return $this->belongsTo(Team::class, 'home_team_id');
     }
 
-    public function awayMatches(): HasMany
+    public function awayTeam(): BelongsTo
     {
-        return $this->hasMany(Match::class, 'away_team_id');
+        return $this->belongsTo(Team::class, 'away_team_id');
     }
 
-    public function matches(): HasMany
-    {
-        return $this->homeMatches()->union($this->awayMatches()->toBase());
-    }
+    //todo teams relation
 
     /* Attributes */
 
