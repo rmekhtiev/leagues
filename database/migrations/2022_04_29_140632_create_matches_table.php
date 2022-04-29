@@ -23,6 +23,7 @@ class CreateMatchesTable extends Migration
             $table->foreign('league_id')->references('id')->on('leagues')->cascadeOnDelete();
             $table->unsignedInteger('home_team_score')->nullable();
             $table->unsignedInteger('away_team_score')->nullable();
+            $table->enum('status', ['finished', 'upcoming', 'live'])->default('upcoming');
             $table->timestamps();
         });
     }
