@@ -16,6 +16,7 @@ class TeamFactory extends Factory
         return [
             'title' => $this->faker->word. ' FC',
             'description' => $this->faker->text,
+            'power' => $this->faker->numberBetween(1, 100),
         ];
     }
 }

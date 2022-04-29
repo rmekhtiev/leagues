@@ -16,6 +16,7 @@ class Team extends Model
         'title',
         'description',
         'league_id',
+        'power',
     ];
 
     /* Relations */

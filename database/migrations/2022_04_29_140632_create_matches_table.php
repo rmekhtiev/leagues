@@ -24,6 +24,8 @@ class CreateMatchesTable extends Migration
             $table->unsignedInteger('home_team_score')->nullable();
             $table->unsignedInteger('away_team_score')->nullable();
             $table->enum('status', ['finished', 'upcoming', 'live'])->default('upcoming');
+            $table->dateTime('started_at')->nullable();
+            $table->dateTime('finished_at')->nullable();
             $table->timestamps();
         });
     }

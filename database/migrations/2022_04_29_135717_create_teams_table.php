@@ -18,6 +18,7 @@ class CreateTeamsTable extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->foreignId('league_id')->constrained()->cascadeOnDelete();
+            $table->unsignedInteger('power')->default(1);
             $table->timestamps();
         });
     }

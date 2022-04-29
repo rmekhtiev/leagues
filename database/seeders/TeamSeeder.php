@@ -18,7 +18,7 @@ class TeamSeeder extends Seeder
         $leagues = League::all();
 
         foreach ($leagues as $league) {
-            Team::factory(8)->create(['league_id' => $league->getKey()]);
+            Team::factory(4)->create(['league_id' => $league->getKey()]);
         }
     }
 }
