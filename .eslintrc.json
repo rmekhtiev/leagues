@@ -1,0 +1,31 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "node": true
+  },
+  "parser": "vue-eslint-parser",
+  "extends": [
+    "eslint:recommended",
+    "plugin:vue/recommended",
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
+  "globals": {
+  },
+  "parserOptions": {
+    "parser": "@babel/eslint-parser",
+    "sourceType": "module",
+    "requireConfigFile": false
+  },
+  "plugins": [
+    "vue",
+    "prettier"
+  ],
+  "rules": {
+    "vue/valid-v-slot": ["error", {
+      "allowModifiers": true
+    }]
+  }
+}

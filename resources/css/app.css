@@ -1,0 +1,25 @@
+@import '~vuetify/dist/vuetify.min.css';
+@import "~@mdi/font/css/materialdesignicons.css";
+
+.html-description > p {
+    margin: 0;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.h-full {
+    height: 100%;
+}
+
+.relative {
+    position: relative;
+}
+
+.v-main {
+    width: calc(100% - 10px) !important;
+}
+.v-data-table>.v-data-table__wrapper tbody tr.v-data-table__expanded__content {
+    box-shadow: none;
+}
