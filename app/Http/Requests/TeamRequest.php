@@ -27,6 +27,7 @@ class TeamRequest extends FormRequest
             'title' => ['required'],
             'description' => ['nullable'],
             'league_id' => ['nullable', 'exists:leagues,id'],
+            'power' => ['required', 'numeric', 'between:1,100'],
         ];
     }
 }

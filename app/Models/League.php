@@ -22,6 +22,11 @@ class League extends Model
         return $this->hasMany(Team::class);
     }
 
+    public function matches(): HasMany
+    {
+        return $this->hasMany(Match::class);
+    }
+
     /* Attributes */
 
     /* Functions */

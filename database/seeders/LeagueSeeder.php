@@ -14,6 +14,6 @@ class LeagueSeeder extends Seeder
      */
     public function run()
     {
-        League::factory(5)->create();
+        League::factory(1)->create();
     }
 }

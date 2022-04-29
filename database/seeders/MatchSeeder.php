@@ -3,7 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\League;
-use App\Models\Match;
+use App\Services\MatchScheduleService;
+use App\Services\MatchService;
 use Illuminate\Database\Seeder;
 
 class MatchSeeder extends Seeder
@@ -15,20 +16,11 @@ class MatchSeeder extends Seeder
      */
     public function run()
     {
-        //todo weeks
-        $leagues = League::all();
-
-        foreach ($leagues as $league) {
-           foreach ($league->teams as $team) {
-               $otherTeams = $league->teams()->where('id', '!=', $team->id)->get();
-               foreach ($otherTeams as $awayTeam) {
-                   Match::create([
-                      'home_team_id' => $team->getKey(),
-                      'away_team_id' => $awayTeam->getKey(),
-                      'league_id' => $league->getKey(),
-                   ]);
-               }
-           }
+        foreach (League::all() as $league) {
+            app(MatchScheduleService::class)->scheduleLeague($league);
+            foreach ($league->matches as $match) {
+                app(MatchService::class)->simulate($match);
+            }
         }
     }
 }

@@ -20,6 +20,7 @@ class TeamResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'league_id' => $this->league_id,
+            'power' => $this->power,
         ];
     }
 }
