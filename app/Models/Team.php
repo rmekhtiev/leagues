@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class League extends Model
+class Team extends Model
 {
     use HasFactory;
 
@@ -14,14 +14,14 @@ class League extends Model
     protected $fillable = [
         'title',
         'description',
+        'league_id',
     ];
 
     /* Relations */
-    public function teams(): HasMany
+    public function league(): BelongsTo
     {
-        return $this->hasMany(Team::class);
+        return $this->belongsTo(League::class);
     }
-
     /* Attributes */
 
     /* Functions */
