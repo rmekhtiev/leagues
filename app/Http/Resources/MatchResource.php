@@ -20,6 +20,8 @@ class MatchResource extends JsonResource
             'league_id' => $this->league_id,
             'home_team_id' => $this->home_team_id,
             'away_team_id' => $this->away_team_id,
+            'home_team_score' => $this->home_team_score,
+            'away_team_score' => $this->away_team_score,
         ];
     }
 }

@@ -15,6 +15,8 @@ class Match extends Model
         'home_team_id',
         'away_team_id',
         'league_id',
+        'home_team_score',
+        'away_team_score',
     ];
 
     /* Relations */

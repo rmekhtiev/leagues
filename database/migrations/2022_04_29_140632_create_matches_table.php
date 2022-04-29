@@ -21,6 +21,8 @@ class CreateMatchesTable extends Migration
             $table->foreign('home_team_id')->references('id')->on('teams')->cascadeOnDelete();
             $table->foreign('away_team_id')->references('id')->on('teams')->cascadeOnDelete();
             $table->foreign('league_id')->references('id')->on('leagues')->cascadeOnDelete();
+            $table->unsignedInteger('home_team_score')->nullable();
+            $table->unsignedInteger('away_team_score')->nullable();
             $table->timestamps();
         });
     }

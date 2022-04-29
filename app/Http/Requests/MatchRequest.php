@@ -27,6 +27,8 @@ class MatchRequest extends FormRequest
             'league_id' => ['nullable', 'exists:leagues,id'],
             'home_team_id' => ['nullable', 'exists:teams,id'],
             'away_team_id' => ['nullable', 'exists:teams,id'],
+            'home_team_score' => ['nullable'],
+            'away_team_score' => ['nullable'],
         ];
     }
 }
