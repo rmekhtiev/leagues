@@ -17,6 +17,7 @@ class CreateLeaguesTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
+            $table->text('poster_url')->nullable();
             $table->timestamps();
         });
     }

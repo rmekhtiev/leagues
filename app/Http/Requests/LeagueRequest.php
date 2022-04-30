@@ -26,6 +26,7 @@ class LeagueRequest extends FormRequest
         return [
             'title' => ['required'],
             'description' => ['nullable'],
+            'poster_url' => ['nullable']
         ];
     }
 }

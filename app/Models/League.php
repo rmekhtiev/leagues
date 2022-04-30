@@ -14,6 +14,7 @@ class League extends Model
     protected $fillable = [
         'title',
         'description',
+        'poster_url',
     ];
 
     public static function getAllowedFilters(): array

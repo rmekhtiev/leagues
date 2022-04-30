@@ -19,6 +19,8 @@ class LeagueResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
+            'poster_url' => $this->poster_url,
+            'teams_count' => $this->teams()->count(),
         ];
     }
 }
