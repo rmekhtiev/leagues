@@ -16,6 +16,16 @@ class League extends Model
         'description',
     ];
 
+    public static function getAllowedFilters(): array
+    {
+        return [];
+    }
+
+    public static function getAllowedSorts(): array
+    {
+        return [];
+    }
+
     /* Relations */
     public function teams(): HasMany
     {

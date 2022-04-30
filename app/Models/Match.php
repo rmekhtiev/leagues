@@ -27,6 +27,16 @@ class Match extends Model
       'finished_at' => 'datetime',
     ];
 
+    public static function getAllowedFilters(): array
+    {
+        return [];
+    }
+
+    public static function getAllowedSorts(): array
+    {
+        return [];
+    }
+
     /* Relations */
     public function league(): BelongsTo
     {
