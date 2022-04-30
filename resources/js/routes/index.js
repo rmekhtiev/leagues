@@ -9,6 +9,23 @@ const routes = [
         name: "index",
     },
     {
+        path: "/leagues",
+        name: "leagues",
+        component: () => import("@/pages/leagues/index"),
+    },
+    {
+        path: "/leagues/:id",
+        name: "leagueId",
+        component: () => import("@/pages/leagues/id"),
+        children: [
+            {
+                path: "",
+                name: "leagueHome",
+                component: () => import("@/pages/leagues/LeagueHome"),
+            },
+        ],
+    },
+    {
         path: "/403",
         name: "forbidden",
         component: () => import("@/pages/exceptions/Forbidden"),
