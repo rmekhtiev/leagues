@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\League;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LeagueRequest extends FormRequest
+class LeagueStatsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,7 @@ class LeagueRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required'],
-            'description' => ['nullable'],
-            'poster_url' => ['nullable']
+            'week' => ['nullable'],
         ];
     }
 }

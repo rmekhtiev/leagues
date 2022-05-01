@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::group(['prefix' => 'leagues/{league}'], function () {
+    Route::get('/stats', [LeagueController::class, 'stats']);
+    Route::post('/simulate', [LeagueController::class, 'simulate']);
+    Route::post('/reset', [LeagueController::class, 'reset']);
+});
 Route::apiResource('leagues', LeagueController::class);
 Route::apiResource('matches', MatchController::class);
 Route::apiResource('teams', TeamController::class);

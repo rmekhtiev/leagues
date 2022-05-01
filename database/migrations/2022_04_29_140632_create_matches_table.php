@@ -26,6 +26,7 @@ class CreateMatchesTable extends Migration
             $table->enum('status', ['finished', 'upcoming', 'live'])->default('upcoming');
             $table->dateTime('started_at')->nullable();
             $table->dateTime('finished_at')->nullable();
+            $table->integer('week')->nullable();
             $table->timestamps();
         });
     }

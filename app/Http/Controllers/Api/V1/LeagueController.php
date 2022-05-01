@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LeagueRequest;
+use App\Http\Requests\League\LeagueRequest;
+use App\Http\Requests\League\LeagueStatsRequest;
 use App\Http\Resources\LeagueResource;
 use App\Models\League;
+use App\Services\LeagueService;
+use App\Services\MatchService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -14,6 +17,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LeagueController extends Controller
 {
+    protected LeagueService $leagueService;
+    protected MatchService $matchService;
+
+    public function __construct()
+    {
+        $this->leagueService = app(LeagueService::class);
+        $this->matchService = app(MatchService::class);
+    }
+
     public function index(Request $request): AnonymousResourceCollection
     {
         $limit = $request->input('itemsPerPage', self::ITEMS_PER_PAGE);
@@ -54,5 +66,27 @@ class LeagueController extends Controller
     {
         $league->delete();
         return response()->json([], Response::HTTP_NO_CONTENT);
+    }
+
+    public function stats(League $league, LeagueStatsRequest $request): JsonResponse
+    {
+        return response()->json([
+            'data' => $this->leagueService->getStats($league, $request->week)->values()->toArray()
+        ], Response::HTTP_OK);
+    }
+
+    public function reset(League $league): JsonResponse
+    {
+        $this->leagueService->reset($league);
+        return response()->json([], Response::HTTP_OK);
+    }
+
+    public function simulate(League $league): JsonResponse
+    {
+        foreach ($league->matches as $match) {
+            $this->matchService->simulate($match);
+        }
+
+        return response()->json([], Response::HTTP_OK);
     }
 }

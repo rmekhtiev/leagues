@@ -21,19 +21,17 @@ class MatchService
     {
         $winner = $this->predictWinner($match->homeTeam, $match->awayTeam);
         $loser = $match->getOpponentTeam($winner);
-        $winnerPosition = $match->getTeamPosition($winner);
-        $loserPosition = $match->getTeamPosition($loser);
         $loserScore = rand(0, 2);
-        $match->{$loserPosition . '_team_score'} = $loserScore;
-        $match->{$winnerPosition . '_team_score'} = $loserScore + rand(1, 3);
-        $match->finished_at = $match->started_at->addMinute();
-        $match->status = MatchStatusEnum::FINISHED;
-        $match->save();
+        $match->update([
+            $match->getTeamPosition($loser) . '_team_score' => $loserScore,
+            $match->getTeamPosition($winner) . '_team_score' => $loserScore + rand(1, 3),
+            'finished_at' => $match->started_at->addMinute(),
+            'status' => MatchStatusEnum::FINISHED,
+        ]);
     }
 
     public function predictWinner(Team $team, Team $opponentTeam): Team
     {
-        // todo draw probability
         $totalPower = $team->power + $opponentTeam->power;
         $teamKey = $this->randomizeService->getRandomWeightedElement([
             $team->getKey() => $this->randomizeService->calculatePercentage($team->power, $totalPower),
@@ -42,20 +40,22 @@ class MatchService
         return $team->getKey() === $teamKey ? $team : $opponentTeam;
     }
 
-    public function createHomeAwayMatch(League $league, Team $team, Team $opponentTeam, Carbon $startedAt, int $weeksOffset)
+    public function createHomeAwayMatch(League $league, Team $team, Team $opponentTeam, Carbon $startedAt, int $week, int $weeksOffset)
     {
         Match::create([
             'home_team_id' => $team->getKey(),
             'away_team_id' => $opponentTeam->getKey(),
             'league_id' => $league->getKey(),
-            'started_at' => $startedAt
+            'started_at' => $startedAt,
+            'week' => $week,
         ]);
 
         Match::create([
             'home_team_id' => $opponentTeam->getKey(),
             'away_team_id' => $team->getKey(),
             'league_id' => $league->getKey(),
-            'started_at' => $startedAt->addWeeks($weeksOffset)
+            'started_at' => $startedAt->addWeeks($weeksOffset),
+            'week' => $week + $weeksOffset,
         ]);
     }
 }

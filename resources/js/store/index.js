@@ -13,6 +13,7 @@ const store = new Vuex.Store({
     getters: getters,
     modules: {
         leagues: resourceModule({ name: "leagues", httpClient: transport }),
+        matches: resourceModule({ name: "matches", httpClient: transport }),
     },
 });
 

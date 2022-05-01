@@ -21,6 +21,9 @@ class LeagueResource extends JsonResource
             'description' => $this->description,
             'poster_url' => $this->poster_url,
             'teams_count' => $this->teams()->count(),
+            'weeks' => $this->weeks,
+            'latest_played_week' => $this->latest_played_week,
+            'latest_playing_week' => $this->latest_playing_week,
         ];
     }
 }

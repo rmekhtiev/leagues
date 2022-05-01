@@ -23,6 +23,11 @@ class MatchResource extends JsonResource
             'home_team_score' => $this->home_team_score,
             'away_team_score' => $this->away_team_score,
             'status' => $this->status,
+            'home_team' => new TeamResource($this->homeTeam),
+            'away_team' => new TeamResource($this->awayTeam),
+            'week' => $this->week,
+            'started_at' => $this->started_at,
+            'finished_at' => $this->finished_at,
         ];
     }
 }

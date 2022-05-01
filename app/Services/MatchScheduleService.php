@@ -39,6 +39,7 @@ class MatchScheduleService
                     $teams[$i],
                     $teams[$opponent],
                     Carbon::now()->addWeeks($round),
+                    $round + 1,
                     $secondRound - $round - 1
                 );
         }
