@@ -48,4 +48,17 @@ class LeagueService
         }
         return $collection->sortByDesc('points')->sortByDesc('goal_diff');
     }
+
+    public function getPredictions(League $league, ?int $untilWeek = null): Collection
+    {
+        //todo
+        $collection = collect([]);
+        foreach ($league->teams as $team) {
+            $collection->push([
+                'team' => $team,
+                'percent' => 1,
+            ]);
+        }
+        return $collection->sortByDesc('points');
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\League\LeaguePredictionsRequest;
 use App\Http\Requests\League\LeagueRequest;
 use App\Http\Requests\League\LeagueStatsRequest;
 use App\Http\Resources\LeagueResource;
@@ -72,6 +73,13 @@ class LeagueController extends Controller
     {
         return response()->json([
             'data' => $this->leagueService->getStats($league, $request->week)->values()->toArray()
+        ], Response::HTTP_OK);
+    }
+
+    public function predictions(League $league, LeaguePredictionsRequest $request): JsonResponse
+    {
+        return response()->json([
+            'data' => $this->leagueService->getPredictions($league, $request->week)->values()->toArray()
         ], Response::HTTP_OK);
     }
 

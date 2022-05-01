@@ -18,7 +18,12 @@
                     <league-matches-results-card
                         :week="week"
                         :league="league"
+                        class="mb-4"
                         @weekChanged="(value) => weekChanged(value)"
+                    />
+                    <league-winner-prediction-card
+                        :week="week"
+                        :league="league"
                     />
                 </v-col>
             </v-row>
@@ -31,10 +36,16 @@ import { mapActions, mapGetters } from "vuex";
 import LeagueInfoCard from "@/components/leagues/cards/LeagueInfoCard";
 import LeagueTeamsCard from "@/components/leagues/cards/LeagueTeamsCard";
 import LeagueMatchesResultsCard from "@/components/leagues/cards/LeagueMatchesResultsCard";
+import LeagueWinnerPredictionCard from "@/components/leagues/cards/LeagueWinnerPredictionCard";
 
 export default {
     name: "LeagueHome",
-    components: { LeagueMatchesResultsCard, LeagueTeamsCard, LeagueInfoCard },
+    components: {
+        LeagueWinnerPredictionCard,
+        LeagueMatchesResultsCard,
+        LeagueTeamsCard,
+        LeagueInfoCard,
+    },
     data() {
         return {
             week: null,

@@ -2,7 +2,9 @@
     <v-card>
         <v-card-title>
             <div class="d-flex w-full justify-space-between align-center">
-                <div class="overline">Match Results</div>
+                <div class="overline">
+                    {{ weekWithSuffix }} week Match Results
+                </div>
                 <div style="width: 75px">
                     <v-select
                         :value="week"
@@ -25,7 +27,7 @@
                 v-for="(item, index) in items"
                 :key="`match-${index}`"
                 :match="item"
-                class="mb-2 body-1"
+                class="mb-2"
             />
         </v-card-text>
     </v-card>
@@ -35,11 +37,12 @@
 import MatchListItem from "@/components/matches/MatchListItem";
 import editableTableData from "@/mixins/editableTableData";
 import serverSidePagination from "@/mixins/serverSidePagination";
+import ordinalSuffix from "@/mixins/ordinalSuffix";
 
 export default {
     name: "LeagueMatchesResultsCard",
     components: { MatchListItem },
-    mixins: [editableTableData, serverSidePagination],
+    mixins: [editableTableData, serverSidePagination, ordinalSuffix],
     props: {
         league: {
             type: Object,
@@ -60,6 +63,11 @@ export default {
                 by_week: this.week,
             },
         };
+    },
+    computed: {
+        weekWithSuffix() {
+            return this.ordinalSuffix(this.week);
+        },
     },
     watch: {
         week() {

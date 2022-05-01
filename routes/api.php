@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'leagues/{league}'], function () {
     Route::get('/stats', [LeagueController::class, 'stats']);
+    Route::get('/predictions', [LeagueController::class, 'predictions']);
     Route::post('/simulate', [LeagueController::class, 'simulate']);
     Route::post('/reset', [LeagueController::class, 'reset']);
 });
