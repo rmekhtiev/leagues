@@ -99,10 +99,10 @@ class LeagueService
             $losers[$key]['percent'] = 0;
         }
 
-        /* Calculate probability for the pretenders */
-        $totalPoints = array_sum(array_map(fn($item) => $item['points'], $pretenders));
+        /* Calculate probability for the pretenders. 0.001 for a very small chance */
+        $totalPoints = array_sum(array_map(fn($item) => $item['points'] ?: 0.001, $pretenders));
         foreach ($pretenders as $key => $team) {
-            $pretenders[$key]['percent'] = round(($team['points']) / $totalPoints * 100, 2);
+            $pretenders[$key]['percent'] = round(($team['points'] ?: 0.001) / $totalPoints * 100, 3);
         }
 
         return collect(array_merge($pretenders, $losers))->sortByDesc('percent');
