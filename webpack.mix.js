@@ -1,4 +1,6 @@
-const mix = require('laravel-mix');
+const mix = require("laravel-mix");
+const path = require("path");
+const ESLintPlugin = require("eslint-webpack-plugin");
 
 /*
  |--------------------------------------------------------------------------
@@ -11,7 +13,21 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
-        //
-    ]);
+mix.js("resources/js/app.js", "public/js")
+    .vue()
+    .postCss("resources/css/app.css", "public/css")
+    .extract()
+    .version()
+    .webpackConfig({
+        plugins: [
+            new ESLintPlugin({
+                extensions: ["js", "vue"],
+                fix: true,
+            }),
+        ],
+        resolve: {
+            alias: {
+                "@": path.resolve(__dirname, "resources/js"),
+            },
+        },
+    });
