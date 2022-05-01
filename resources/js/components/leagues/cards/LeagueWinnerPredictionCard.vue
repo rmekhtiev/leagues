@@ -1,8 +1,7 @@
 <template>
     <v-card>
         <v-card-title class="overline"
-            >{{ weekWithSuffix }} Week Predictions of Championship
-            after</v-card-title
+            >{{ weekWithSuffix }} Week Predictions of Championship</v-card-title
         >
         <v-card-text>
             <team-championship-prediction-list-item

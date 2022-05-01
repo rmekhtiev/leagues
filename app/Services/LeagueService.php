@@ -4,15 +4,18 @@ namespace App\Services;
 
 use App\Enums\MatchStatusEnum;
 use App\Models\League;
+use App\Models\Match;
 use Illuminate\Support\Collection;
 
 class LeagueService
 {
     protected TeamService $teamService;
+    protected MatchService $matchService;
 
     public function __construct()
     {
         $this->teamService = app(TeamService::class);
+        $this->matchService = app(MatchService::class);
     }
 
     public function reset(League $league): int
@@ -35,7 +38,6 @@ class LeagueService
                 $matchesResults['wins']->merge($matchesResults['loses'])->merge($matchesResults['draws'])
             );
             $collection->push([
-                'place' => '',
                 'team' => $team,
                 'points' => $this->teamService->getPointsByResults($matchesResults['wins']->count(), $matchesResults['draws']->count()),
                 'wins' => $matchesResults['wins']->count(),
@@ -46,19 +48,63 @@ class LeagueService
                 'missed' => $goalStats['missed'],
             ]);
         }
-        return $collection->sortByDesc('points')->sortByDesc('goal_diff');
+        return $collection->sortByDesc('goal_diff')->sortByDesc('points');
     }
 
-    public function getPredictions(League $league, ?int $untilWeek = null): Collection
+    public function getPredictions(League $league, int $week): Collection
     {
-        //todo
-        $collection = collect([]);
-        foreach ($league->teams as $team) {
-            $collection->push([
-                'team' => $team,
-                'percent' => 1,
-            ]);
+        /* Collect teams stats*/
+        $teams = $this
+            ->getStats($league, $week)
+            ->groupBy('team.id')
+            ->map(
+                function ($item) {
+                    return [
+                        'points' => $item[0]['points'],
+                        'team' => $item[0]['team'],
+                    ];
+                }
+            )
+            ->toArray();
+
+        /* Get max points from the list of teams */
+        $maxPoints = max(array_map(fn($item) => $item['points'], $teams));
+        /* Calculate probable points for each team */
+        $matches = Match::select('home_team_id', 'away_team_id')
+            ->byLeague($league->getKey())
+            ->afterWeek($week)
+            ->upcoming()
+            ->with('homeTeam', 'awayTeam')
+            ->get();
+        foreach ($matches as $match) {
+            $percents = $this->matchService->predictWinningPercents(
+                $match['homeTeam'],
+                $match['awayTeam'],
+            );
+            $teams[$match['home_team_id']]['points'] += $percents[$match['home_team_id']] / 100 * 3;
+            $teams[$match['away_team_id']]['points'] += $percents[$match['away_team_id']] / 100 * 3;
         }
-        return $collection->sortByDesc('points');
+
+        /* Get pretenders and losers with zero-chance for the championship */
+        $pretenders = [];
+        $losers = [];
+        foreach ($teams as $key => $team) {
+            /* If team has a theoretical chance to win*/
+            if ($team['points'] + ($league->weeks - $week) * 3 >= $maxPoints) {
+                $pretenders[] = $team;
+                continue;
+            }
+            /* If team doesn't have any chances */
+            $losers[$key] = $team;
+            $losers[$key]['percent'] = 0;
+        }
+
+        /* Calculate probability for the pretenders */
+        $totalPoints = array_sum(array_map(fn($item) => $item['points'], $pretenders));
+        foreach ($pretenders as $key => $team) {
+            $pretenders[$key]['percent'] = round(($team['points']) / $totalPoints * 100, 2);
+        }
+
+        return collect(array_merge($pretenders, $losers))->sortByDesc('percent');
     }
 }

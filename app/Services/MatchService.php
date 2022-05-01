@@ -30,12 +30,22 @@ class MatchService
         ]);
     }
 
-    public function predictWinner(Team $team, Team $opponentTeam): Team
+    public function predictWinningPercents(Team $team, Team $opponentTeam): array
     {
         $totalPower = $team->power + $opponentTeam->power;
-        $teamKey = $this->randomizeService->getRandomWeightedElement([
-            $team->getKey() => $this->randomizeService->calculatePercentage($team->power, $totalPower),
+        return [
+            $team->getKey() =>  $this->randomizeService->calculatePercentage($team->power, $totalPower),
             $opponentTeam->getKey() => $this->randomizeService->calculatePercentage($opponentTeam->power, $totalPower),
+        ];
+    }
+
+    public function predictWinner(Team $team, Team $opponentTeam): Team
+    {
+        $percents = $this->predictWinningPercents($team, $opponentTeam);
+
+        $teamKey = $this->randomizeService->getRandomWeightedElement([
+            $team->getKey() => $percents[$team->getKey()],
+            $opponentTeam->getKey() => $percents[$opponentTeam->getKey()],
         ]);
         return $team->getKey() === $teamKey ? $team : $opponentTeam;
     }

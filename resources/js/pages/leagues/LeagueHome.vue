@@ -4,24 +4,32 @@
             <v-col col="12">
                 <league-info-card
                     :league="league"
+                    :week="week"
                     @reset="onReset"
                     @simulated="onSimulate"
+                    @weekSimulated="onWeekSimulate"
                 />
             </v-col>
         </v-row>
         <div v-if="week">
             <v-row no-gutters class="mb-4">
                 <v-col cols="12" lg="6" md="12" class="px-2 mb-lg-0 mb-4">
-                    <league-teams-card :league="league" :week="week" />
+                    <league-teams-card
+                        ref="leagueTeamsCard"
+                        :league="league"
+                        :week="week"
+                    />
                 </v-col>
                 <v-col cols="12" lg="6" md="12" class="px-2">
                     <league-matches-results-card
+                        ref="leagueMatchesResultsCard"
                         :week="week"
                         :league="league"
                         class="mb-4"
                         @weekChanged="(value) => weekChanged(value)"
                     />
                     <league-winner-prediction-card
+                        ref="leagueMatchesPredictionCard"
                         :week="week"
                         :league="league"
                     />
@@ -83,6 +91,10 @@ export default {
         },
         onSimulate() {
             this.week = this.league.weeks;
+        },
+        onWeekSimulate() {
+            this.$refs.leagueTeamsCard.loadStats();
+            this.$refs.leagueMatchesResultsCard.loadResource();
         },
     },
 };

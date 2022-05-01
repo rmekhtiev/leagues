@@ -18,9 +18,9 @@ class MatchSeeder extends Seeder
     {
         foreach (League::all() as $league) {
             app(MatchScheduleService::class)->scheduleLeague($league);
-            foreach ($league->matches as $match) {
-                app(MatchService::class)->simulate($match);
-            }
+//            foreach ($league->matches as $match) {
+//                app(MatchService::class)->simulate($match);
+//            }
         }
     }
 }

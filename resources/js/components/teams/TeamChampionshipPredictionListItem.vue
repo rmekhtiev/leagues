@@ -2,7 +2,7 @@
     <v-row no-gutters class="black--text">
         <v-col cols="5">{{ prediction.team.title }}</v-col>
         <v-spacer />
-        <v-col cols="5" class="text-right">% {{ prediction.percent }}</v-col>
+        <v-col cols="5" class="text-right">{{ prediction.percent }} %</v-col>
     </v-row>
 </template>
 

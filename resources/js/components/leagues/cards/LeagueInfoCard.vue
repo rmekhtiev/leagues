@@ -74,7 +74,14 @@
                         :loading="simulateProgress"
                         @click="simulate"
                     >
-                        Simulate
+                        Simulate all
+                    </v-btn>
+                    <v-btn
+                        text
+                        :loading="simulateWeekProgress"
+                        @click="simulateWeek"
+                    >
+                        Simulate this week
                     </v-btn>
                     <v-btn
                         text
@@ -99,10 +106,16 @@ export default {
             required: true,
             default: () => ({}),
         },
+        week: {
+            type: Number,
+            required: false,
+            default: 1,
+        },
     },
     data() {
         return {
             simulateProgress: false,
+            simulateWeekProgress: false,
             resetProgress: false,
         };
     },
@@ -112,6 +125,14 @@ export default {
             await this.$axios.post(`leagues/${this.league.id}/simulate`);
             this.simulateProgress = false;
             this.$emit("simulated");
+        },
+        async simulateWeek() {
+            this.simulateWeekProgress = true;
+            await this.$axios.post(`leagues/${this.league.id}/simulate/week`, {
+                week: this.week,
+            });
+            this.simulateWeekProgress = false;
+            this.$emit("weekSimulated");
         },
         async reset() {
             this.resetProgress = true;

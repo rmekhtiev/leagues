@@ -36,6 +36,8 @@ class Match extends Model
     {
         return [
             AllowedFilter::scope('finished'),
+            AllowedFilter::scope('upcoming'),
+            AllowedFilter::scope('live'),
             AllowedFilter::scope('by_week'),
             AllowedFilter::scope('by_league'),
             AllowedFilter::scope('by_team'),
@@ -44,6 +46,7 @@ class Match extends Model
             AllowedFilter::scope('loses'),
             AllowedFilter::scope('draws'),
             AllowedFilter::scope('until_week'),
+            AllowedFilter::scope('after_week'),
             AllowedFilter::exact('league_id'),
         ];
     }
@@ -75,6 +78,16 @@ class Match extends Model
     public function scopeFinished(Builder $builder): Builder
     {
         return $builder->where('status', MatchStatusEnum::FINISHED);
+    }
+
+    public function scopeUpcoming(Builder $builder): Builder
+    {
+        return $builder->where('status', MatchStatusEnum::UPCOMING);
+    }
+
+    public function scopeLive(Builder $builder): Builder
+    {
+        return $builder->where('status', MatchStatusEnum::LIVE);
     }
 
     public function scopeByWeek(Builder $builder, int $week): Builder
@@ -140,6 +153,15 @@ class Match extends Model
         }
 
         return $builder->where('week', '<=', $week);
+    }
+
+    public function scopeAfterWeek(Builder $builder, ?int $week): Builder
+    {
+        if (!$week) {
+            return $builder;
+        }
+
+        return $builder->where('week', '>=', $week);
     }
 
     /* Functions */

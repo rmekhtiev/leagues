@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Enums\MatchStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\League\LeaguePredictionsRequest;
 use App\Http\Requests\League\LeagueRequest;
@@ -91,7 +92,27 @@ class LeagueController extends Controller
 
     public function simulate(League $league): JsonResponse
     {
-        foreach ($league->matches as $match) {
+        $matches = $league
+            ->matches()
+            ->whereIn('status', [MatchStatusEnum::LIVE, MatchStatusEnum::UPCOMING])
+            ->get();
+
+        foreach ($matches as $match) {
+            $this->matchService->simulate($match);
+        }
+
+        return response()->json([], Response::HTTP_OK);
+    }
+
+    public function simulateWeek(League $league, Request $request): JsonResponse
+    {
+        $matches = $league
+            ->matches()
+            ->whereIn('status', [MatchStatusEnum::LIVE, MatchStatusEnum::UPCOMING])
+            ->byWeek($request->week)
+            ->get();
+
+        foreach ($matches as $match) {
             $this->matchService->simulate($match);
         }
 

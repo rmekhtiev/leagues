@@ -2,7 +2,11 @@
     <v-card>
         <v-card-title class="overline">League Table</v-card-title>
         <v-card-text>
-            <league-teams-table :league="league" :week="week" />
+            <league-teams-table
+                ref="leagueTeamsTable"
+                :league="league"
+                :week="week"
+            />
         </v-card-text>
     </v-card>
 </template>
@@ -22,6 +26,11 @@ export default {
             type: Number,
             required: false,
             default: 1,
+        },
+    },
+    methods: {
+        loadStats() {
+            this.$refs.leagueTeamsTable.loadStats();
         },
     },
 };
