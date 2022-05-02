@@ -15,10 +15,11 @@ class TeamSeeder extends Seeder
      */
     public function run()
     {
-        $leagues = League::all();
+        $league = League::find(1);
 
-        foreach ($leagues as $league) {
-            Team::factory(4)->create(['league_id' => $league->getKey()]);
-        }
+        Team::create(['league_id' => $league->getKey(), 'title' => 'Manchester United', 'power' => 70]);
+        Team::create(['league_id' => $league->getKey(), 'title' => 'Liverpool', 'power' => 80]);
+        Team::create(['league_id' => $league->getKey(), 'title' => 'Real Madrid', 'power' => 75]);
+        Team::create(['league_id' => $league->getKey(), 'title' => 'Bayern Munich', 'power' => 70]);
     }
 }
